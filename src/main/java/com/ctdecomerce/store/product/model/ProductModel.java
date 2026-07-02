@@ -30,7 +30,7 @@ public class ProductModel {
 
     @Getter
     @Setter
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private RetailersModel owner;
 }

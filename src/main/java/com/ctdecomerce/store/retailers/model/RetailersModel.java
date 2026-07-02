@@ -1,5 +1,6 @@
 package com.ctdecomerce.store.retailers.model;
 
+import com.ctdecomerce.store.product.model.ProductModel;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,5 +42,4 @@ public class RetailersModel {
     @Setter
     @Column()
     private Date dateCreated = new Date();
-
 }
