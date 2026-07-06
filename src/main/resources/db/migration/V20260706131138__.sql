@@ -1,0 +1,2 @@
+ALTER TABLE retailers
+    ALTER COLUMN user_id SET NOT NULL;

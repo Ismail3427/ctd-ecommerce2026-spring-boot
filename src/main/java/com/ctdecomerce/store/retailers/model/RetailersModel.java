@@ -28,7 +28,7 @@ public class RetailersModel {
     @Column(unique = true)
     private String accountId;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String userId;
 
     @Column()
