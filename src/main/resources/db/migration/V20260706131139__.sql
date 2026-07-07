@@ -1,10 +1,10 @@
-create table blogposts
-(
-    id          uuid default gen_random_uuid() not null
-        constraint blogposts_pk
-            primary key,
-    title       varchar(255)                   not null,
-    description varchar(1000)                  not null,
-    addedAt     TIMESTAMP                      not null,
-    isactive    BOOLEAN
-);
+-- create table blogposts
+-- (
+--     id          uuid default gen_random_uuid() not null
+--         constraint blogposts_pk
+--             primary key,
+--     title       varchar(255)                   not null,
+--     description varchar(1000)                  not null,
+--     addedAt     TIMESTAMP                      not null,
+--     isactive    BOOLEAN
+-- );

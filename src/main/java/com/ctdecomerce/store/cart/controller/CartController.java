@@ -5,6 +5,8 @@ import com.ctdecomerce.store.cart.dto.UpdateQuantityRequest;
 import com.ctdecomerce.store.cart.dto.UserIdRequest;
 import com.ctdecomerce.store.cart.model.CartModel;
 import com.ctdecomerce.store.cart.service.CartService;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +14,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@Setter
+@AllArgsConstructor
 @RestController("CartController")
 @RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
 
-    public CartController(CartService cartService) {
-        this.cartService = cartService;
-    }
+//    public CartController(CartService cartService) {
+//        this.cartService = cartService;
+//    }
 
     @PostMapping("/add")
     public ResponseEntity<CartModel> addToCart(@RequestBody AddToCart add) {

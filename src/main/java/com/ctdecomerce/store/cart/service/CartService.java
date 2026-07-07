@@ -9,20 +9,22 @@ import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.stripe.model.Product;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+
+@Setter
+@AllArgsConstructor
 @Service
 public class CartService {
     private final CartRepo cartRepo;
     private final ProductRepo productRepo;
 
-    public CartService(CartRepo cartRepo, ProductRepo productRepo) {
-        this.cartRepo = cartRepo;
-        this.productRepo = productRepo;
-    }
+
 
     @Transactional
     public CartModel addToCart(AddToCart addToCart) {

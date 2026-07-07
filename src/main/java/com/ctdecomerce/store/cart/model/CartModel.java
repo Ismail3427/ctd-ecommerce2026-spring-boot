@@ -24,6 +24,5 @@ public class CartModel {
     private int quantity = 1;
 
     @ManyToOne()
-    @JoinColumn()
     private ProductModel product;
 }
