@@ -17,9 +17,6 @@ public class UserModel {
     @Column(name="id")
     private UUID id;
 
-    @Column(name="name")
-    private String name;
-
     @Column(name="user_id",unique = true)
     private String userId;
 
