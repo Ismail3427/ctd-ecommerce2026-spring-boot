@@ -18,6 +18,10 @@ public class UserService {
 
     @Transactional
     public UserModel createNewUser(UserModel user) {
+        UserModel checkUser = userRepo.findUserModelByUserId(user.getUserId());
+        if (checkUser != null) {
+            return checkUser;
+        }
         return userRepo.save(user);
     }
 
