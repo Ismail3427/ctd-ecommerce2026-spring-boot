@@ -5,6 +5,7 @@ import com.ctdecomerce.store.cart.dto.UpdateQuantityRequest;
 import com.ctdecomerce.store.cart.dto.UserIdRequest;
 import com.ctdecomerce.store.cart.model.CartModel;
 import com.ctdecomerce.store.cart.service.CartService;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -47,7 +48,7 @@ public class CartController {
         return new ResponseEntity<>(cartService.decrementQuantity(request), HttpStatus.OK);
     }
 
-    public ResponseEntity rateLimiterFallback() {
+    public ResponseEntity<String> rateLimiterFallback(RequestNotPermitted exception) {
         return ResponseEntity.status(429).body("TOO MANY REQUESTS");
     }
 }

@@ -17,6 +17,7 @@ import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.StripeObject;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -87,7 +88,7 @@ public class RetailersController {
                 body("No event found");
     }
 
-    public ResponseEntity rateLimiterFallback() {
+    public ResponseEntity<String> rateLimiterFallback(RequestNotPermitted exception) {
         return ResponseEntity.status(429).body("TOO MANY REQUESTS");
     }
 }
