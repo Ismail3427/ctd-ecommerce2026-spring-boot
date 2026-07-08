@@ -29,7 +29,7 @@ public class RetailersModel {
     @Column(unique = true)
     private String accountId;
 
-    @ManyToOne()
+    @OneToOne()
     @JoinColumn()
     private UserModel user;
 
