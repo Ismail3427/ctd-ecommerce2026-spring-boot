@@ -100,7 +100,9 @@ public class RetailersController {
                         OrdersModel order = new OrdersModel();
                         order.setUser(user);
                         order.setCart(finalCarts);
+                        System.out.println(order);
                         ordersRepo.save(order);
+                        ordersRepo.delete(order);
                         return ResponseEntity.status(HttpStatus.OK).body("Complete");
                     } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
