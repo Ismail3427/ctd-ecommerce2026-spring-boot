@@ -24,7 +24,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -78,17 +81,31 @@ public class RetailersController {
                 StripeObject stripeObject = dataObjectDeserializer.getObject().get();
                 Session session = (Session) stripeObject;
                 Map<String, String> metadata = session.getMetadata();
-                UserModel user = userRepo.findUserModelByUserId(metadata.get("userId"));
-                List<CartModel> carts = cartRepo.findCartModelsByUserId(user);
-                for (CartModel cart : carts) {
-                    cart.setShowing(false);
-                    cartRepo.save(cart);
+                String stringifiedList = metadata.get("cartIds");
+                if (stringifiedList != null) {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        List<String> carts = mapper.readValue(stringifiedList, new TypeReference<List<String>>(){});
+                        List<CartModel> finalCarts = new ArrayList<>();
+                        for (String cartId : carts) {
+                            CartModel cart = cartRepo.findById(UUID.fromString(cartId)).orElse(null);
+                            finalCarts.add(cart);
+                        }
+                        UserModel user = userRepo.findUserModelByUserId(metadata.get("userId"));
+                        for (CartModel cart : finalCarts) {
+                            cart.setShowing(false);
+                            cartRepo.save(cart);
+                        }
+                        System.out.println(finalCarts);
+                        OrdersModel order = new OrdersModel();
+                        order.setUser(user);
+                        order.setCart(finalCarts);
+                        ordersRepo.save(order);
+                        return ResponseEntity.status(HttpStatus.OK).body("Complete");
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+                    }
                 }
-                OrdersModel order = new OrdersModel();
-                order.setUser(user);
-                order.setCart(carts);
-                ordersRepo.save(order);
-                return ResponseEntity.status(HttpStatus.OK).body("Complete");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deserialization failed");
             }
