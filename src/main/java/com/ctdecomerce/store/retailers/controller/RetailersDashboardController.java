@@ -19,6 +19,9 @@ import com.ctdecomerce.store.retailers.dto.IsRetailer;
 public class RetailersDashboardController {
     private RetailersService retailersService;
 
+    public RetailersDashboardController(RetailersService retailersService) {
+        this.retailersService = retailersService;
+    }
 
     @PostMapping()
     public ResponseEntity<IsRetailer> checkIsRetailer(@RequestBody UserIdRequest userIdRequest) {

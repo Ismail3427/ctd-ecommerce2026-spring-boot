@@ -14,10 +14,7 @@ import com.stripe.model.AccountLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -25,6 +22,7 @@ import java.util.NoSuchElementException;
 @Service
 @Setter
 @Getter
+@ToString
 public class RetailersService {
     private final RetailersRepo retailersRepo;
     private final UserRepo userRepo;
@@ -68,11 +66,19 @@ public class RetailersService {
 
     @Transactional
     public IsRetailer checkIfRetailer(UserIdRequest userIdRequest) {
+        System.out.println(userIdRequest);
         try {
             var user = userRepo.findUserModelByUserId(userIdRequest.getUserId());
+            System.out.println(user);
             var retailer = retailersRepo.findRetailerByUser(user);
-            return new IsRetailer(true);
-        } catch (NoSuchElementException e) {
+            System.out.println(retailer);
+            System.out.println(user.toString() + ": " + retailer.getUser().toString());
+            if (retailer.getUser() == user) {
+                return new IsRetailer(true);
+            }
+            return new IsRetailer(false);
+        } catch (NoSuchElementException | NullPointerException e) {
+            System.out.println("passed and except");
             return new IsRetailer(false);
         }
     }
