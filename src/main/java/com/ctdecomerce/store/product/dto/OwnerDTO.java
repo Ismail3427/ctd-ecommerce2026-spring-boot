@@ -9,8 +9,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
+public class OwnerDTO {
     private UUID id;
     private String name;
-    private OwnerDTO owner;
 }

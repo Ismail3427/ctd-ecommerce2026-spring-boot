@@ -2,6 +2,7 @@ package com.ctdecomerce.store.product.service;
 
 import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.CreateProductDTO;
+import com.ctdecomerce.store.product.dto.OwnerDTO;
 import com.ctdecomerce.store.product.dto.ProductDTO;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
@@ -47,7 +48,8 @@ public class ProductService {
         List<ProductModel> allProductsUnfiltered = productRepo.findAll();
         List<ProductDTO> filteredProducts = new ArrayList<>();
         for (ProductModel product : allProductsUnfiltered) {
-            ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), product.getOwner());
+            OwnerDTO owner = new OwnerDTO( product.getOwner().getId(), product.getOwner().getName());
+            ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner);
             filteredProducts.add(newProduct);
         }
         return filteredProducts;
