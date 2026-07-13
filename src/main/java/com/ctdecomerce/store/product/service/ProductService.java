@@ -1,5 +1,7 @@
 package com.ctdecomerce.store.product.service;
 
+import com.ctdecomerce.store.categories.model.CategoriesModel;
+import com.ctdecomerce.store.categories.repository.CategoriesRepo;
 import com.ctdecomerce.store.dto.IdRequest;
 import com.ctdecomerce.store.product.dto.CreateProductDTO;
 import com.ctdecomerce.store.product.dto.OwnerDTO;
@@ -20,16 +22,24 @@ import java.util.UUID;
 public class ProductService {
     private final ProductRepo productRepo;
     private final RetailersRepo retailersRepo;
+    private final CategoriesRepo categoriesRepo;
 
-    public ProductService(ProductRepo productRepo, RetailersRepo retailersRepo) {
+    public ProductService(ProductRepo productRepo, RetailersRepo retailersRepo, CategoriesRepo categoriesRepo) {
         this.productRepo = productRepo;
         this.retailersRepo = retailersRepo;
+        this.categoriesRepo = categoriesRepo;
     }
 
     @Transactional
     public ProductModel createProduct(CreateProductDTO createProductDTO) {
         ProductModel productModel = new ProductModel();
         productModel.setName(createProductDTO.getName());
+        List<CategoriesModel> cats = new ArrayList<>();
+        for (String id : createProductDTO.getCategoryId()) {
+            CategoriesModel category = categoriesRepo.findById(UUID.fromString(id)).orElse(null);
+            cats.add(category);
+        }
+        productModel.setCategories(cats);
         productModel.setDescription(createProductDTO.getDescription());
         productModel.setPriceInCents(createProductDTO.getPriceInCents());
         RetailersModel retailersModel = retailersRepo.findById(UUID.fromString(createProductDTO.getUserId())).orElse(null);
@@ -38,17 +48,12 @@ public class ProductService {
         return productModel;
     }
 
-//    @Transactional
-//    public ProductModel changeProductName(CreateProductDTO product) {
-//        var product = productRepo.findById()
-//    }
-
     @Transactional
     public List<ProductDTO> getAllProducts() {
         List<ProductModel> allProductsUnfiltered = productRepo.findAll();
         List<ProductDTO> filteredProducts = new ArrayList<>();
         for (ProductModel product : allProductsUnfiltered) {
-            OwnerDTO owner = new OwnerDTO( product.getOwner().getId(), product.getOwner().getName());
+            OwnerDTO owner = new OwnerDTO(product.getOwner().getId(), product.getOwner().getName());
             ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner);
             filteredProducts.add(newProduct);
         }

@@ -1,11 +1,13 @@
 package com.ctdecomerce.store.product.model;
 
+import com.ctdecomerce.store.categories.model.CategoriesModel;
 import com.ctdecomerce.store.delivery.model.LocationModel;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,8 +29,8 @@ public class ProductModel {
     @Column()
     private int priceInCents;
 
-    @Column()
-    private String category;
+    @ManyToMany()
+    private List<CategoriesModel> categories;
 
     @ManyToOne()
     @JoinColumn()
@@ -38,5 +40,4 @@ public class ProductModel {
     @JoinColumn()
     @JsonBackReference
     private RetailersModel owner;
-
 }
