@@ -1,10 +1,7 @@
 package com.ctdecomerce.store.product.service;
 
 import com.ctdecomerce.store.dto.IdRequest;
-import com.ctdecomerce.store.product.dto.CreateProductDTO;
-import com.ctdecomerce.store.product.dto.EditNameReqDto;
-import com.ctdecomerce.store.product.dto.OwnerDTO;
-import com.ctdecomerce.store.product.dto.ProductDTO;
+import com.ctdecomerce.store.product.dto.*;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.model.RetailersModel;
@@ -40,12 +37,7 @@ public class ProductService {
     }
 
 
-    @Transactional
-    public ProductModel changeProductName(EditNameReqDto editNameReqDto) {
-        var product = productRepo.findById(editNameReqDto.getProduct_id()).orElseThrow();
-        product.setName(editNameReqDto.getName());
-        return productRepo.save(product);
-    }
+
 
 //    @Transactional
 //    public ProductModel changeProductName(CreateProductDTO product) {
@@ -68,4 +60,25 @@ public class ProductService {
     public ProductModel getProductById(IdRequest idRequest) {
         return productRepo.findById(UUID.fromString(idRequest.getId())).orElse(null);
     }
+
+    @Transactional
+    public void changeProductName(EditNameReqDto editNameReqDto) {
+        var product = productRepo.findById(editNameReqDto.getProduct_id()).orElseThrow();
+        product.setName(editNameReqDto.getName());
+        productRepo.save(product);
+    }
+
+    @Transactional
+    public void changeProductDescription(EditDescriptionReqDto editDescriptionReqDto) {
+        var product = productRepo.findById(editDescriptionReqDto.getProduct_id()).orElseThrow();
+        product.setDescription(editDescriptionReqDto.getDescription());
+        productRepo.save(product);
+    }
+    @Transactional
+    public void changeProductPrice(EditPriceReqDto editPriceReqDto) {
+        var product = productRepo.findById(editPriceReqDto.getProduct_id()).orElseThrow();
+        product.setPriceInCents(editPriceReqDto.getPriceInCents());
+        productRepo.save(product);
+    }
+
 }

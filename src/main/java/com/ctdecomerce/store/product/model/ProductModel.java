@@ -27,7 +27,14 @@ public class ProductModel {
     @Column()
     private int priceInCents;
 
+    @Column(name = "stock")
+    private int stock;
 
+    @Column(name = "isAvailable")
+    private boolean isAvailable;
+
+    @Column(name = "isShowing")
+    private boolean isShowing;
 
     @ManyToOne()
     @JoinColumn()

@@ -1,9 +1,7 @@
 package com.ctdecomerce.store.product.controller;
 
 import com.ctdecomerce.store.dto.IdRequest;
-import com.ctdecomerce.store.product.dto.CreateProductDTO;
-import com.ctdecomerce.store.product.dto.EditNameReqDto;
-import com.ctdecomerce.store.product.dto.ProductDTO;
+import com.ctdecomerce.store.product.dto.*;
 import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.service.ProductService;
 import com.ctdecomerce.store.retailers.dto.RetailerIdRequest;
@@ -48,8 +46,22 @@ public class ProductController {
     }
 
     @PostMapping("/change-name")
-    public ProductModel setNewProductName(@RequestBody EditNameReqDto editNameReqDto) {
-        return productService.changeProductName(editNameReqDto);
+    public void setNewProductName(@RequestBody EditNameReqDto editNameReqDto) {
+        productService.changeProductName(editNameReqDto);
     }
+
+    @PostMapping("/change-description")
+    public void setNewProductName(@RequestBody EditDescriptionReqDto editDescriptionReqDto) {
+        productService.changeProductDescription(editDescriptionReqDto);
+    }
+
+    @PostMapping("/change-price")
+    public void setNewProductName(@RequestBody EditPriceReqDto editPriceReqDto) {
+        productService.changeProductPrice(editPriceReqDto);
+    }
+
+
+
+
 
 }
