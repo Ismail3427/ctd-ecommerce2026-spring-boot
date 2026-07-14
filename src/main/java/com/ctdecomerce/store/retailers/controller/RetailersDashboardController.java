@@ -7,6 +7,7 @@ import com.ctdecomerce.store.dto.LoginLinkRes;
 import com.ctdecomerce.store.orders.model.OrdersModel;
 import com.ctdecomerce.store.product.dto.EditNameReqDto;
 import com.ctdecomerce.store.product.model.ProductModel;
+import com.ctdecomerce.store.product.service.ProductService;
 import com.ctdecomerce.store.retailers.dto.*;
 
 import com.ctdecomerce.store.retailers.model.RetailersModel;
@@ -26,10 +27,12 @@ import java.util.List;
 @RestController("RetailersDashboardController")
 @RequestMapping("/retailer-dashboard")
 public class RetailersDashboardController {
+    private final ProductService productService;
     private RetailersService retailersService;
 
-    public RetailersDashboardController(RetailersService retailersService) {
+    public RetailersDashboardController(RetailersService retailersService, ProductService productService) {
         this.retailersService = retailersService;
+        this.productService = productService;
     }
 
     @PostMapping()
@@ -47,9 +50,14 @@ public class RetailersDashboardController {
         return new ResponseEntity<>(retailersService.findRetailerFromUser(userIdRequest), HttpStatus.OK);
     }
 
+    @PostMapping("/get-products")
+    public List<ProductModel> getRetailersProducts(@RequestBody RetailerIdRequest retailerIdRequest) {
+        return productService.getRetailersProducts(retailerIdRequest);
+    }
+
     @PostMapping("/get-orders")
     public List<OrderItemDto> getRetailersOrders(@RequestBody RetailerIdRequest retailerIdRequest) {
-
+        
         return retailersService.findRetailerOrders(retailerIdRequest);
     }
 }
