@@ -56,7 +56,7 @@ public class RetailersDashboardController {
     }
 
     @PostMapping("/get-orders")
-    public List<OrderItemDto> getRetailersOrders(@RequestBody RetailerIdRequest retailerIdRequest) {
+    public List<DeliveryModel> getRetailersOrders(@RequestBody RetailerIdRequest retailerIdRequest) {
         
         return retailersService.findRetailerOrders(retailerIdRequest);
     }

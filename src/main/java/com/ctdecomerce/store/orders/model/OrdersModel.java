@@ -25,7 +25,7 @@ public class OrdersModel {
     private UserModel user;
 
     @Column()
-    private int finalPriceInCents;
+    private double finalPriceInCents;
 
     @OneToOne()
     @JoinTable(

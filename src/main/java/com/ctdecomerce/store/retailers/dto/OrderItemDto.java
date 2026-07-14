@@ -21,4 +21,5 @@ public class OrderItemDto {
         private String email;
         private String status;
         private boolean completed;
+        private int finalPriceInCents;
 }
