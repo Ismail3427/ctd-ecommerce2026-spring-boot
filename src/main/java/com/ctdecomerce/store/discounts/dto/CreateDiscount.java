@@ -1,0 +1,17 @@
+package com.ctdecomerce.store.discounts.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CreateDiscount {
+    private String name;
+    private double offer;
+    private String productId;
+    private String userId;
+}

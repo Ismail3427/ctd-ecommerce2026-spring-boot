@@ -1,6 +1,7 @@
 package com.ctdecomerce.store.discounts.model;
 
 import com.ctdecomerce.store.product.model.ProductModel;
+import com.ctdecomerce.store.retailers.model.RetailersModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,4 +27,8 @@ public class DiscountsModel {
 
     @Column()
     private String name;
+
+    @ManyToOne()
+    @JoinColumn()
+    private RetailersModel retailer;
 }

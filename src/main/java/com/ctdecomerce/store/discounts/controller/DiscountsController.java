@@ -1,6 +1,8 @@
 package com.ctdecomerce.store.discounts.controller;
 
+import com.ctdecomerce.store.discounts.dto.CreateDiscount;
 import com.ctdecomerce.store.discounts.dto.FindByProduct;
+import com.ctdecomerce.store.discounts.dto.UserIdRequest;
 import com.ctdecomerce.store.discounts.model.DiscountsModel;
 import com.ctdecomerce.store.discounts.service.DiscountsService;
 import com.ctdecomerce.store.product.model.ProductModel;
@@ -26,5 +28,15 @@ public class DiscountsController {
     @PostMapping("/product/get")
     public ResponseEntity<DiscountsModel> findDiscountsForProduct(@RequestBody FindByProduct product) {
         return new ResponseEntity<>(discountsService.getDiscountsByProduct(product), HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<DiscountsModel> createDiscount(@RequestBody CreateDiscount createDiscount) {
+        return new ResponseEntity<>(discountsService.createDicount(createDiscount), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/get")
+    public ResponseEntity<List<DiscountsModel>> getDiscounts(@RequestBody UserIdRequest userIdRequest) {
+        return new ResponseEntity<>(discountsService.getDiscounts(userIdRequest), HttpStatus.OK);
     }
 }
