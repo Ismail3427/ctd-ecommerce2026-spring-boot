@@ -2,10 +2,9 @@ package com.ctdecomerce.store.retailers.service;
 
 import com.ctdecomerce.store.delivery.model.DeliveryModel;
 import com.ctdecomerce.store.delivery.repository.DeliveryRepo;
-import com.ctdecomerce.store.orders.model.OrdersModel;
+import com.ctdecomerce.store.dto.AcctIdRequest;
+import com.ctdecomerce.store.dto.LoginLinkRes;
 import com.ctdecomerce.store.orders.repository.OrdersRepo;
-import com.ctdecomerce.store.product.dto.EditNameReqDto;
-import com.ctdecomerce.store.product.model.ProductModel;
 import com.ctdecomerce.store.product.repository.ProductRepo;
 import com.ctdecomerce.store.retailers.dto.*;
 import com.ctdecomerce.store.retailers.mappers.OrderMapper;
@@ -13,25 +12,25 @@ import com.ctdecomerce.store.retailers.model.RetailersModel;
 import com.ctdecomerce.store.retailers.repository.RetailersRepo;
 import com.ctdecomerce.store.user.model.UserModel;
 import com.ctdecomerce.store.user.repository.UserRepo;
+import com.stripe.StripeClient;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Account;
 import com.stripe.model.AccountLink;
-import com.stripe.model.Product;
+import com.stripe.model.LoginLink;
 import com.stripe.param.AccountCreateParams;
 import com.stripe.param.AccountLinkCreateParams;
+import com.stripe.param.AccountLoginLinkCreateParams;
 import jakarta.transaction.Transactional;
 import lombok.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 @Setter
-@Getter
 @ToString
+@AllArgsConstructor
 public class RetailersService {
     private final RetailersRepo retailersRepo;
     private final UserRepo userRepo;
@@ -39,14 +38,14 @@ public class RetailersService {
     private final DeliveryRepo deliveryRepo;
     private final OrderMapper orderMapper;
     private final ProductRepo productRepo;
+    private StripeClient stripeClient;
 
-    public RetailersService(RetailersRepo retailersRepo, UserRepo userRepo, OrdersRepo ordersRepo, DeliveryRepo deliveryRepo, OrderMapper orderMapper, ProductRepo productRepo) {
-        this.retailersRepo = retailersRepo;
-        this.userRepo = userRepo;
-        this.ordersRepo = ordersRepo;
-        this.deliveryRepo = deliveryRepo;
-        this.orderMapper = orderMapper;
-        this.productRepo = productRepo;
+
+    @Transactional
+    public LoginLinkRes generateLoginLink(AcctIdRequest acctIdRequest) throws StripeException {
+        AccountLoginLinkCreateParams params = AccountLoginLinkCreateParams.builder().build();
+        LoginLink loginLink = stripeClient.v1().accounts().loginLinks().create(acctIdRequest.getAccountId(), params);
+        return new LoginLinkRes(loginLink.getUrl());
     }
 
     @Transactional
@@ -100,17 +99,16 @@ public class RetailersService {
     }
 
 
-
     @Transactional
     public RetailersModel findRetailerFromUser(UserIdRequest userIdRequest) {
         try {
             var user = userRepo.findUserModelByUserId(userIdRequest.getUserId());
             var retailer = retailersRepo.findRetailerByUser(user);
-            if (retailer.getUser() == user ) {
+            if (retailer.getUser() == user) {
                 return retailer;
             }
             return null;
-        } catch(NoSuchElementException | NullPointerException e) {
+        } catch (NoSuchElementException | NullPointerException e) {
             return null;
         }
     }

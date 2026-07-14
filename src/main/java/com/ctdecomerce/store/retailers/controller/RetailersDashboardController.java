@@ -2,6 +2,8 @@ package com.ctdecomerce.store.retailers.controller;
 
 
 import com.ctdecomerce.store.delivery.model.DeliveryModel;
+import com.ctdecomerce.store.dto.AcctIdRequest;
+import com.ctdecomerce.store.dto.LoginLinkRes;
 import com.ctdecomerce.store.orders.model.OrdersModel;
 import com.ctdecomerce.store.product.dto.EditNameReqDto;
 import com.ctdecomerce.store.product.model.ProductModel;
@@ -9,6 +11,7 @@ import com.ctdecomerce.store.retailers.dto.*;
 
 import com.ctdecomerce.store.retailers.model.RetailersModel;
 import com.ctdecomerce.store.retailers.service.RetailersService;
+import com.stripe.exception.StripeException;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,29 +37,19 @@ public class RetailersDashboardController {
         return new ResponseEntity<>(retailersService.checkIfRetailer(userIdRequest), HttpStatus.OK);
     }
 
+    @PostMapping("/link")
+    public ResponseEntity<LoginLinkRes> getLoginLink(@RequestBody AcctIdRequest acctIdRequest) throws StripeException {
+        return new ResponseEntity<>(retailersService.generateLoginLink(acctIdRequest), HttpStatus.OK);
+    }
+
     @PostMapping("/find-retailer")
     public ResponseEntity<RetailersModel> findRetailer(@RequestBody UserIdRequest userIdRequest) {
         return new ResponseEntity<>(retailersService.findRetailerFromUser(userIdRequest), HttpStatus.OK);
     }
-
-
 
     @PostMapping("/get-orders")
     public List<OrderItemDto> getRetailersOrders(@RequestBody RetailerIdRequest retailerIdRequest) {
 
         return retailersService.findRetailerOrders(retailerIdRequest);
     }
-
-
-
-
-
-
-
-
-
-
-    //@PostMapping()
-
-
 }
