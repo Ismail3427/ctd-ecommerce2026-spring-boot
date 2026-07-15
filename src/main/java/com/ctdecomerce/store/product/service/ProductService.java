@@ -60,12 +60,12 @@ public class ProductService {
             DiscountsModel discounts = discountsRepo.findDiscountsModelByProduct(product);
             if (discounts != null) {
                 double productOgPrice = ((double) product.getPriceInCents() / 100) * (1 - discounts.getOffer()) * 100;
-                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, (int) productOgPrice, true, product.getPriceInCents());
+                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, (int) productOgPrice, true, product.getPriceInCents(), product.isShowing(), product.isAvailable());
                 if (product.getStock() > 0) {
                     filteredProducts.add(newProduct);
                 }
             } else {
-                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents());
+                ProductDTO newProduct = new ProductDTO(product.getId(), product.getName(), owner, product.getPriceInCents(), false, product.getPriceInCents(), product.isShowing(), product.isAvailable());
                 if (product.getStock() > 0) {
                     filteredProducts.add(newProduct);
                 }
