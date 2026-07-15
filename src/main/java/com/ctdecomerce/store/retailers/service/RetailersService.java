@@ -39,14 +39,14 @@ public class RetailersService {
     private final DeliveryRepo deliveryRepo;
     private final OrderMapper orderMapper;
     private final ProductRepo productRepo;
-    private StripeClient stripeClient;
+    private final StripeClient stripeClient;
     @Value("${frontend.url}")
     String url;
 
     @Transactional
     public LoginLinkRes generateLoginLink(AcctIdRequest acctIdRequest) throws StripeException {
         AccountLoginLinkCreateParams params = AccountLoginLinkCreateParams.builder().build();
-        LoginLink loginLink = stripeClient.v1().accounts().loginLinks().create(acctIdRequest.getAccountId(), params);
+        LoginLink loginLink = this.stripeClient.v1().accounts().loginLinks().create(acctIdRequest.getAccountId(), params);
         return new LoginLinkRes(loginLink.getUrl());
     }
 
