@@ -17,6 +17,7 @@ public class UserService {
     public UserModel createNewUser(UserModel user) {
         UserModel checkUser = userRepo.findUserModelByUserId(user.getUserId());
         if (checkUser != null) {
+            checkUser.setIpAddress(user.getIpAddress());
             checkUser.setLoginsCount(user.getLoginsCount());
             userRepo.save(checkUser);
             return checkUser;

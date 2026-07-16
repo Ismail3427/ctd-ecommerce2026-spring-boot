@@ -23,6 +23,9 @@ public class UserModel {
     @Column(name="email")
     private String email;
 
+    @Column(name="ip_address")
+    private String ipAddress;
+
     @Column()
     private String name;
 
