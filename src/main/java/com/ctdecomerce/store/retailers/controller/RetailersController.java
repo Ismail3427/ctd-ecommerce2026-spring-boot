@@ -78,24 +78,13 @@ public class RetailersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Signature verification failed");
         }
         if ("account.updated".equals(event.getType())) {
-            System.out.println("-> Webhook received account.updated successfully");
             Account account = Account.retrieve(event.getAccount());
-
-            System.out.println("-> Retailer Account ID: " + account.getId());
-            System.out.println("-> Are charges enabled yet? " + account.getChargesEnabled());
-
-            Map<String, String> metadata = account.getMetadata();
-            System.out.println("-> Metadata dump: " + metadata);
-
             if (account.getChargesEnabled()) {
-                System.out.println("-> Success! Charges are enabled. Writing to DB...");
+                Map<String, String> metadata = account.getMetadata();
                 retailersService.createAccountToDB(metadata.get("name"), account.getId(), metadata.get("userId"));
                 return ResponseEntity.status(HttpStatus.OK).body("Success");
-            } else {
-                System.out.println("-> Blocked: Webhook triggered but chargesEnabled is still false.");
             }
         }
-
         if ("checkout.session.completed".equals(event.getType())) {
             EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
             if (dataObjectDeserializer.getObject().isPresent()) {
